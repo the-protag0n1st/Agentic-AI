@@ -31,7 +31,7 @@ def run_fl(clients, test_data, rounds=10, alpha=1.0, agent_model="ollama:phi3", 
         if verbose:
             print(f"\n--- Run {run_id} | alpha={alpha} | Round {r}/{rounds} ---")
 
-        global_w = copy.deepcopy(gm.state_dict())
+        global_w = {k: v.cpu() for k, v in gm.state_dict().items()}
 
         local_w = [train_local(copy.deepcopy(gm), c, epochs=local_epochs, lr=local_lr)
                    for c in clients]

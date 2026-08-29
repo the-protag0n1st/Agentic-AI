@@ -11,3 +11,4 @@ venv.bak/
 fl_metrics.db
 *.png
 data/
+*.db

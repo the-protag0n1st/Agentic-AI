@@ -7,6 +7,19 @@ from sklearn.metrics import f1_score, roc_auc_score, confusion_matrix
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+def print_device_diagnostics():
+    print("\n=== Device Diagnostics ===")
+    print(f"PyTorch version: {torch.__version__}")
+    print(f"CUDA available: {torch.cuda.is_available()}")
+    if torch.cuda.is_available():
+        print(f"CUDA version used by PyTorch: {torch.version.cuda}")
+        print(f"GPU name: {torch.cuda.get_device_name(0)}")
+        total_mem = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
+        print(f"GPU VRAM: {total_mem:.2f} GB")
+    print(f"Selected device: {device}")
+    print("==========================\n")
+
+print_device_diagnostics()
 
 class Net(nn.Module):
     def __init__(self):
@@ -56,7 +69,8 @@ def train_local(model, data, epochs=2, lr=0.01, batch_size=32):
             loss_fn(model(x), y).backward()
             opt.step()
 
-    return copy.deepcopy(model.state_dict())
+    state = {k: v.cpu() for k, v in model.state_dict().items()}
+    return state
 
 
 @torch.no_grad()
