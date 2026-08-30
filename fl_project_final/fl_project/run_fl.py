@@ -17,6 +17,11 @@ def run_fl(clients, test_data, rounds=10, alpha=1.0, agent_model="ollama:phi3", 
            min_votes=1, db_path="fl_metrics.db", verbose=True,
            include_history=True, include_anomaly_signals=True,
            allow_client_selection=True, allow_aggregation_selection=True):
+    import torch as _torch
+    _torch.manual_seed(seed)
+    if _torch.cuda.is_available():
+        _torch.cuda.manual_seed(seed)
+
     init_db(db_path)
     if run_id is None:
         run_id = f"a{alpha}_{str(uuid.uuid4())[:6]}"
@@ -146,12 +151,17 @@ def run_experiment(alphas, num_clients=5, rounds=10, methods=["Agent"],
         for method in methods:
             print(f"\n=== Starting Method: {method} | Alpha: {alpha} ===")
             clients = make_clients(train_data, num_clients=num_clients, alpha=alpha, seed=seed)
-            logs = run_fl(clients, test_data, rounds=rounds, alpha=alpha,
-                           agent_model=agent_model, method=method, run_id=None, seed=seed, db_path=db_path,
-                           include_history=include_history,
-                           include_anomaly_signals=include_anomaly_signals,
-                           allow_client_selection=allow_client_selection,
-                           allow_aggregation_selection=allow_aggregation_selection)
-            results[alpha][method] = logs
+            try:
+                logs = run_fl(clients, test_data, rounds=rounds, alpha=alpha,
+                               agent_model=agent_model, method=method, run_id=None, seed=seed, db_path=db_path,
+                               include_history=include_history,
+                               include_anomaly_signals=include_anomaly_signals,
+                               allow_client_selection=allow_client_selection,
+                               allow_aggregation_selection=allow_aggregation_selection)
+                results[alpha][method] = logs
+            except Exception as e:
+                import traceback
+                print(f"FAILED RUN: method={method} alpha={alpha} seed={seed}")
+                traceback.print_exc()
 
     return results, train_data, test_data
