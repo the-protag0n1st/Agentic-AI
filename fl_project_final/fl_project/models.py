@@ -74,7 +74,7 @@ def train_local(model, data, epochs=2, lr=0.01, batch_size=32):
 
 
 @torch.no_grad()
-def evaluate_model(model, test_data, batch_size=128):
+def evaluate_model(model, test_data, batch_size=1024):
     model.eval()
     loader = DataLoader(test_data, batch_size=batch_size)
     loss_fn = nn.CrossEntropyLoss()
@@ -87,9 +87,13 @@ def evaluate_model(model, test_data, batch_size=128):
         out = model(x)
         total_loss += loss_fn(out, y).item()
         probs = torch.softmax(out, dim=1)[:, 1]
-        all_preds.extend(out.argmax(1).cpu().numpy().tolist())
-        all_labels.extend(y.cpu().numpy().tolist())
-        all_probs.extend(probs.cpu().numpy().tolist())
+        all_preds.append(out.argmax(1))
+        all_labels.append(y)
+        all_probs.append(probs)
+
+    all_preds = torch.cat(all_preds).cpu().numpy().tolist()
+    all_labels = torch.cat(all_labels).cpu().numpy().tolist()
+    all_probs = torch.cat(all_probs).cpu().numpy().tolist()
 
     acc = round(100 * sum(p == l for p, l in zip(all_preds, all_labels)) / len(all_labels), 2)
     loss = round(total_loss / len(loader), 4)

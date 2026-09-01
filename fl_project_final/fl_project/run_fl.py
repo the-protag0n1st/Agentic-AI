@@ -12,7 +12,7 @@ from database import (init_db, insert_client_metrics, insert_round_metrics,
 
 
 def run_fl(clients, test_data, rounds=10, alpha=1.0, agent_model="ollama:phi3", method=None,
-           run_id=None, seed=42, local_epochs=2, local_lr=0.01,
+           run_id=None, seed=42, local_epochs=2, local_lr=0.01, local_batch_size=32,
            norm_z_threshold=2.0, cosine_threshold=-0.2, var_z_threshold=2.0,
            min_votes=1, db_path="fl_metrics.db", verbose=True,
            include_history=True, include_anomaly_signals=True,
@@ -38,7 +38,7 @@ def run_fl(clients, test_data, rounds=10, alpha=1.0, agent_model="ollama:phi3", 
 
         global_w = {k: v.cpu() for k, v in gm.state_dict().items()}
 
-        local_w = [train_local(copy.deepcopy(gm), c, epochs=local_epochs, lr=local_lr)
+        local_w = [train_local(copy.deepcopy(gm), c, epochs=local_epochs, lr=local_lr, batch_size=local_batch_size)
                    for c in clients]
 
         norms = compute_update_norms(global_w, local_w)
@@ -140,7 +140,8 @@ def run_experiment(alphas, num_clients=5, rounds=10, methods=["Agent"],
                     agent_model="ollama:phi3", db_path="fl_metrics.db", seed=42, normal_classes=None,
                     download=True, root="./data",
                     include_history=True, include_anomaly_signals=True,
-                    allow_client_selection=True, allow_aggregation_selection=True):
+                    allow_client_selection=True, allow_aggregation_selection=True,
+                    local_batch_size=32):
     from dataset import get_datasets, make_clients
 
     train_data, test_data = get_datasets(normal_classes=normal_classes,
@@ -157,7 +158,8 @@ def run_experiment(alphas, num_clients=5, rounds=10, methods=["Agent"],
                                include_history=include_history,
                                include_anomaly_signals=include_anomaly_signals,
                                allow_client_selection=allow_client_selection,
-                               allow_aggregation_selection=allow_aggregation_selection)
+                               allow_aggregation_selection=allow_aggregation_selection,
+                               local_batch_size=local_batch_size)
                 results[alpha][method] = logs
             except Exception as e:
                 import traceback

@@ -107,15 +107,21 @@ def _call_groq(prompt, model):
     return response.choices[0].message.content
 
 
+_session = requests.Session()
+
 def _call_ollama(prompt, model):
     url = "http://localhost:11434/api/generate"
     data = {
         "model": model,
         "prompt": prompt,
         "stream": False,
-        "format": "json"
+        "format": "json",
+        "keep_alive": "30m",
+        "options": {
+            "num_predict": 256
+        }
     }
-    response = requests.post(url, json=data)
+    response = _session.post(url, json=data)
     response.raise_for_status()
     return response.json().get("response", "")
 

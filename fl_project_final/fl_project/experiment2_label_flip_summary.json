@@ -1,0 +1,114 @@
+{
+    "0.3": {
+        "FedAvg": {
+            "accuracy_mean": 87.1175,
+            "accuracy_std": 3.789576713389858,
+            "f1_mean": 0.924325,
+            "f1_std": 0.0246005928112854,
+            "auc_mean": 0.91735,
+            "auc_std": 0.02277403492283845,
+            "runs_completed": 4
+        },
+        "Krum": {
+            "accuracy_mean": 58.0375,
+            "accuracy_std": 39.27489900262847,
+            "f1_mean": 0.6402,
+            "f1_std": 0.39040989570791707,
+            "auc_mean": 0.584075,
+            "auc_std": 0.38282589928930705,
+            "runs_completed": 4
+        },
+        "Median": {
+            "accuracy_mean": 88.634,
+            "accuracy_std": 4.775058114829597,
+            "f1_mean": 0.93492,
+            "f1_std": 0.03155949936231564,
+            "auc_mean": 0.89674,
+            "auc_std": 0.020041656618154123,
+            "runs_completed": 5
+        },
+        "Trimmed Mean": {
+            "accuracy_mean": 90.28399999999999,
+            "accuracy_std": 2.719591881146877,
+            "f1_mean": 0.94472,
+            "f1_std": 0.01738438954924794,
+            "auc_mean": 0.91548,
+            "auc_std": 0.019656347575274496,
+            "runs_completed": 5
+        },
+        "RuleBased": {
+            "accuracy_mean": 58.902,
+            "accuracy_std": 41.58863510624026,
+            "f1_mean": 0.62172,
+            "f1_std": 0.43518995507709046,
+            "auc_mean": 0.65054,
+            "auc_std": 0.36728402905653273,
+            "runs_completed": 5
+        },
+        "Agent": {
+            "accuracy_mean": 75.884,
+            "accuracy_std": 25.933355548405224,
+            "f1_mean": 0.81446,
+            "f1_std": 0.2543778154635345,
+            "auc_mean": 0.85192,
+            "auc_std": 0.08949420092944568,
+            "runs_completed": 5
+        }
+    },
+    "1.0": {
+        "FedAvg": {
+            "accuracy_mean": 84.9075,
+            "accuracy_std": 3.9843140354813036,
+            "f1_mean": 0.9097999999999999,
+            "f1_std": 0.02560299461651571,
+            "auc_mean": 0.9214249999999999,
+            "auc_std": 0.012216757616760101,
+            "runs_completed": 4
+        },
+        "Krum": {
+            "accuracy_mean": 69.0725,
+            "accuracy_std": 39.00428299131605,
+            "f1_mean": 0.7399749999999999,
+            "f1_std": 0.3859809440460327,
+            "auc_mean": 0.717,
+            "auc_std": 0.4319774299659648,
+            "runs_completed": 4
+        },
+        "Median": {
+            "accuracy_mean": 83.07,
+            "accuracy_std": 18.38169923229805,
+            "f1_mean": 0.8865999999999999,
+            "f1_std": 0.14260212714636017,
+            "auc_mean": 0.9109,
+            "auc_std": 0.01087044923941356,
+            "runs_completed": 4
+        },
+        "Trimmed Mean": {
+            "accuracy_mean": 81.376,
+            "accuracy_std": 14.282756386636297,
+            "f1_mean": 0.87846,
+            "f1_std": 0.10942325164241831,
+            "auc_mean": 0.92198,
+            "auc_std": 0.01070172883229618,
+            "runs_completed": 5
+        },
+        "RuleBased": {
+            "accuracy_mean": 69.08250000000001,
+            "accuracy_std": 40.53274098388446,
+            "f1_mean": 0.731575,
+            "f1_std": 0.411736941707526,
+            "auc_mean": 0.71805,
+            "auc_std": 0.43091685586278317,
+            "runs_completed": 4
+        },
+        "Agent": {
+            "accuracy_mean": 72.596,
+            "accuracy_std": 22.73752471136645,
+            "f1_mean": 0.79964,
+            "f1_std": 0.19431836763414828,
+            "auc_mean": 0.88342,
+            "auc_std": 0.08460128249618915,
+            "runs_completed": 5
+        }
+    }
+}
