@@ -51,7 +51,14 @@ def get_datasets(normal_classes=None, root=DATA_ROOT, download=True):
 
 def make_clients(train_data, num_clients=5, alpha=1.0, seed=42):
     rng = np.random.default_rng(seed)
-    targets = np.array(train_data.targets)
+    if hasattr(train_data, "targets"):
+        targets = np.array(train_data.targets)
+    elif hasattr(train_data, "tensors"):
+        targets = train_data.tensors[1].cpu().numpy()
+    elif hasattr(train_data, "indices") and hasattr(train_data.dataset, "targets"):
+        targets = np.array([train_data.dataset.targets[i] for i in train_data.indices])
+    else:
+        targets = np.array([int(train_data[i][1]) for i in range(len(train_data))])
     num_classes = len(set(targets.tolist()))
 
     client_indices = [[] for _ in range(num_clients)]

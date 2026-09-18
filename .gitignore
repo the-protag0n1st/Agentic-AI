@@ -12,3 +12,8 @@ fl_metrics.db
 *.png
 data/
 *.db
+!fl_project_final/fl_project/results/fl_metrics_experiment3_clean.db
+.env
+*.env
+*.log
+*.zip

@@ -42,7 +42,8 @@ class Net(nn.Module):
 
 def _client_labels(data):
     if hasattr(data, "indices") and hasattr(data, "dataset"):
-        return [data.dataset.targets[i] for i in data.indices]
+        if hasattr(data.dataset, "targets"):
+            return [data.dataset.targets[i] for i in data.indices]
     return [int(data[i][1]) for i in range(len(data))]
 
 
@@ -98,7 +99,15 @@ def evaluate_model(model, test_data, batch_size=1024):
     acc = round(100 * sum(p == l for p, l in zip(all_preds, all_labels)) / len(all_labels), 2)
     loss = round(total_loss / len(loader), 4)
     f1 = round(f1_score(all_labels, all_preds, zero_division=0), 4)
-    auc = round(roc_auc_score(all_labels, all_probs), 4) if len(set(all_labels)) > 1 else 0.0
+    try:
+        import numpy as np
+        probs_arr = np.array(all_probs, dtype=float)
+        if np.isnan(probs_arr).any() or np.isinf(probs_arr).any():
+            auc = 0.0
+        else:
+            auc = round(roc_auc_score(all_labels, all_probs), 4) if len(set(all_labels)) > 1 else 0.0
+    except Exception:
+        auc = 0.0
     cm = confusion_matrix(all_labels, all_preds, labels=[0, 1])
 
     return {"accuracy": acc, "loss": loss, "f1": f1, "auc": auc,
