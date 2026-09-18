@@ -195,6 +195,7 @@ def run_experiment3_single_method(
     llm_client: Optional[LLMClient] = None,
     rounds: int = NUM_ROUNDS,
     num_clients: int = NUM_CLIENTS,
+    num_attackers: int = BYZANTINE_BUDGET,
     db_path: str = DB_PATH,
     resume: bool = True,
     quota_tracker: Optional[QuotaTracker] = None,
@@ -266,7 +267,7 @@ def run_experiment3_single_method(
         1.0: make_clients(train_pool, num_clients=num_clients, alpha=1.0, seed=seed),
         0.2: make_clients(train_pool, num_clients=num_clients, alpha=0.2, seed=seed),
     }
-    attacker_ids = get_attacker_ids(seed=seed, num_clients=num_clients, num_attackers=BYZANTINE_BUDGET)
+    attacker_ids = get_attacker_ids(seed=seed, num_clients=num_clients, num_attackers=num_attackers)
 
     # Initialize Agent if applicable
     reflective_agent = None
@@ -275,21 +276,21 @@ def run_experiment3_single_method(
     if method == "AgenticAI":
         agentic_controller = AgenticController(
             llm_client=active_llm,
-            byzantine_budget=BYZANTINE_BUDGET,
+            byzantine_budget=num_attackers,
             trim_ratio=TRIM_RATIO,
             history_length=HISTORY_LENGTH,
         )
     elif method == "ReflectiveAgent":
         reflective_agent = ReflectiveAgent(
             llm_client=active_llm,
-            byzantine_budget=BYZANTINE_BUDGET,
+            byzantine_budget=num_attackers,
             trim_ratio=TRIM_RATIO,
             history_length=HISTORY_LENGTH,
         )
     elif method == "SingleShotLLM":
         single_shot_agent = SingleShotAgent(
             llm_client=active_llm,
-            byzantine_budget=BYZANTINE_BUDGET,
+            byzantine_budget=num_attackers,
             trim_ratio=TRIM_RATIO,
             history_length=HISTORY_LENGTH,
         )
@@ -299,7 +300,7 @@ def run_experiment3_single_method(
 
     for r in range(start_round, rounds + 1):
         t_round_start = time.time()
-        regime = get_regime_for_round(r)
+        regime = get_regime_for_round(r, num_attackers=num_attackers)
         alpha = regime["alpha"]
         attack_active = regime["attack_active"]
         active_clients = partitions[alpha]
@@ -344,7 +345,7 @@ def run_experiment3_single_method(
             all_client_ids=all_client_ids,
             flagged_ids=anomalous_ids,
             persistent_ids=persistent_ids,
-            byzantine_budget=BYZANTINE_BUDGET,
+            byzantine_budget=num_attackers,
             trim_ratio=TRIM_RATIO,
             max_candidates=MAX_CANDIDATES,
         )
@@ -364,7 +365,7 @@ def run_experiment3_single_method(
                 selected_decision = Decision(method="Krum", client_ids=all_client_ids, candidate_id="C3")
             elif method == "RuleBased":
                 selected_decision = rule_based_decision(
-                    candidates, anomalous_ids, history, alpha, all_client_ids
+                    candidates, anomalous_ids, history, alpha, all_client_ids, byzantine_budget=num_attackers
                 )
             elif method == "SingleShotLLM":
                 agent_result = single_shot_agent.decide(
@@ -465,7 +466,7 @@ def run_experiment3_single_method(
             local_weights=local_w,
             global_weights=global_w,
             selected_decision=selected_decision,
-            byzantine_budget=BYZANTINE_BUDGET,
+            byzantine_budget=num_attackers,
             trim_ratio=TRIM_RATIO,
             metric_key="accuracy",
         )
@@ -476,7 +477,7 @@ def run_experiment3_single_method(
             selected_decision.method,
             selected_weights,
             global_weights=global_w,
-            num_byzantine=BYZANTINE_BUDGET,
+            num_byzantine=num_attackers,
             trim_ratio=TRIM_RATIO,
         )
         gm.load_state_dict(new_w)
@@ -644,6 +645,7 @@ if __name__ == "__main__":
     parser.add_argument("--methods", nargs="+", default=METHODS, help="Methods to run")
     parser.add_argument("--rounds", type=int, default=NUM_ROUNDS, help="Rounds per run")
     parser.add_argument("--clients", type=int, default=NUM_CLIENTS, help="Number of clients")
+    parser.add_argument("--num-attackers", "--num-byzantine", "--byzantine-budget", dest="num_attackers", type=int, default=BYZANTINE_BUDGET, help="Number of Byzantine attackers (default: 2)")
     parser.add_argument("--db", type=str, default=DB_PATH, help="Database path")
     parser.add_argument("--data-root", type=str, default="./data", help="CIFAR-10 data root")
 
@@ -674,7 +676,7 @@ if __name__ == "__main__":
     print("STARTING EXPERIMENT 3 RUNNER (RESUMABLE & QUOTA-AWARE)")
     print(f"Seeds: {seeds}")
     print(f"Methods: {methods}")
-    print(f"Rounds: {args.rounds} | Clients: {args.clients}")
+    print(f"Rounds: {args.rounds} | Clients: {args.clients} | Attackers: {args.num_attackers}")
     print(f"Resume Enabled: {args.resume} | Quota Safe: {args.quota_safe}")
     print(f"Database: {args.db}")
     print(f"LLM Provider: {DEFAULT_LLM_PROVIDER} | LLM Model: {DEFAULT_LLM_MODEL}")
@@ -704,6 +706,7 @@ if __name__ == "__main__":
                 test_data=test_data,
                 rounds=args.rounds,
                 num_clients=args.clients,
+                num_attackers=args.num_attackers,
                 db_path=args.db,
                 resume=args.resume,
                 quota_tracker=quota_tracker,

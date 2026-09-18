@@ -29,11 +29,13 @@ def compute_cosine_similarities(global_weights, local_weights_list):
         return torch.cat(parts)
 
     updates = [flatten_update(w) for w in local_weights_list]
-    mean_u = torch.stack(updates).mean(dim=0)
+    # Use coordinate-wise median reference to ensure robust cosine similarity calculation
+    # even when attacker count (f >= 3) would otherwise invert the unweighted mean update
+    ref_u = torch.stack(updates).median(dim=0).values
     sims = []
     for u in updates:
-        num = torch.dot(u, mean_u)
-        den = (torch.norm(u) * torch.norm(mean_u)) + 1e-8
+        num = torch.dot(u, ref_u)
+        den = (torch.norm(u) * torch.norm(ref_u)) + 1e-8
         sims.append(float((num / den).item()))
     return sims
 

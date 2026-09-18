@@ -23,12 +23,20 @@ NUM_ROUNDS = 20
 SEEDS = [1, 2, 3, 4, 5, 6, 7, 8]
 
 # ==============================================================================
+# BYZANTINE ATTACK CONFIGURATION
+# ==============================================================================
+ATTACK_TYPE = "scaled_opposite_update"
+ATTACK_SCALE = -3.0  # malicious_update = -3.0 * clean_update
+NUM_BYZANTINE = 2
+BYZANTINE_BUDGET = 2  # Krum constraint: n >= 2m + 3 -> 10 >= 7
+
+# ==============================================================================
 # DYNAMIC HETEROGENEITY & BYZANTINE REGIME SCHEDULE
 # ==============================================================================
 # Rounds 1–5:   alpha = 100.0 (Near-IID)
 # Rounds 6–10:  alpha = 1.0   (Moderate heterogeneity)
 # Rounds 11–15: alpha = 0.2   (Severe heterogeneity)
-# Rounds 16–20: alpha = 0.2 + 2 Byzantine attackers
+# Rounds 16–20: alpha = 0.2 + Byzantine attackers
 REGIME_SCHEDULE = [
     {"rounds": range(1, 6),   "alpha": 100.0, "attack_active": False, "num_attackers": 0, "name": "near_iid"},
     {"rounds": range(6, 11),  "alpha": 1.0,   "attack_active": False, "num_attackers": 0, "name": "moderate_non_iid"},
@@ -36,20 +44,22 @@ REGIME_SCHEDULE = [
     {"rounds": range(16, 21), "alpha": 0.2,   "attack_active": True,  "num_attackers": 2, "name": "severe_non_iid_byzantine"},
 ]
 
-def get_regime_for_round(round_num: int) -> dict:
+def get_regime_schedule(num_attackers: int = BYZANTINE_BUDGET) -> list[dict]:
+    """Build dynamic regime schedule with configurable number of attackers."""
+    return [
+        {"rounds": range(1, 6),   "alpha": 100.0, "attack_active": False, "num_attackers": 0, "name": "near_iid"},
+        {"rounds": range(6, 11),  "alpha": 1.0,   "attack_active": False, "num_attackers": 0, "name": "moderate_non_iid"},
+        {"rounds": range(11, 16), "alpha": 0.2,   "attack_active": False, "num_attackers": 0, "name": "severe_non_iid"},
+        {"rounds": range(16, 21), "alpha": 0.2,   "attack_active": True,  "num_attackers": num_attackers, "name": "severe_non_iid_byzantine"},
+    ]
+
+def get_regime_for_round(round_num: int, num_attackers: int = BYZANTINE_BUDGET) -> dict:
     """Return the regime configuration for a given round number."""
-    for regime in REGIME_SCHEDULE:
+    schedule = get_regime_schedule(num_attackers=num_attackers)
+    for regime in schedule:
         if round_num in regime["rounds"]:
             return regime
     raise ValueError(f"Round {round_num} outside defined schedule (1-{NUM_ROUNDS})")
-
-# ==============================================================================
-# BYZANTINE ATTACK CONFIGURATION
-# ==============================================================================
-ATTACK_TYPE = "scaled_opposite_update"
-ATTACK_SCALE = -3.0  # malicious_update = -3.0 * clean_update
-NUM_BYZANTINE = 2
-BYZANTINE_BUDGET = 2  # Krum constraint: n >= 2m + 3 -> 10 >= 7
 
 def get_attacker_ids(seed: int, num_clients: int = NUM_CLIENTS, num_attackers: int = NUM_BYZANTINE) -> list[int]:
     """Deterministically select attacker IDs matched across methods for the same seed."""
