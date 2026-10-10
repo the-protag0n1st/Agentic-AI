@@ -1,0 +1,203 @@
+﻿======================================================================
+EXPERIMENT 3: COMPREHENSIVE ANALYSIS & PAPER OUTPUT GENERATOR
+======================================================================
+
+[1/6] Loading data...
+  Loaded 480 round records from 24 (method, seed) combos
+    AgenticAI            seed=1 rounds=20
+    AgenticAI            seed=2 rounds=20
+    AgenticAI            seed=3 rounds=20
+    FixedFedAvg          seed=1 rounds=20
+    FixedFedAvg          seed=2 rounds=20
+    FixedFedAvg          seed=3 rounds=20
+    FixedKrum            seed=1 rounds=20
+    FixedKrum            seed=2 rounds=20
+    FixedKrum            seed=3 rounds=20
+    FixedMedian          seed=1 rounds=20
+    FixedMedian          seed=2 rounds=20
+    FixedMedian          seed=3 rounds=20
+    FixedTrimmedMean     seed=1 rounds=20
+    FixedTrimmedMean     seed=2 rounds=20
+    FixedTrimmedMean     seed=3 rounds=20
+    ReflectiveAgent      seed=1 rounds=20
+    ReflectiveAgent      seed=2 rounds=20
+    ReflectiveAgent      seed=3 rounds=20
+    RuleBased            seed=1 rounds=20
+    RuleBased            seed=2 rounds=20
+    RuleBased            seed=3 rounds=20
+    SingleShotLLM        seed=1 rounds=20
+    SingleShotLLM        seed=2 rounds=20
+    SingleShotLLM        seed=3 rounds=20
+  Agentic log: 123 entries
+  LLM call log: 289 entries
+
+[2/6] Computing statistics...
+
+[3/6] Running statistical tests...
+
+[4/6] Generating tables...
+========================================================================================================================
+TABLE 1: Overall Performance Summary (Mean ┬▒ Std Across 3 Seeds, 20 Rounds)
+========================================================================================================================
+Method               Acc (All)          F1 (All)           Final Acc          Cumul Regret       Time (s/rnd)
+------------------------------------------------------------------------------------------------------------------------
+FedAvg               89.60 ┬▒ 3.72   0.9403 ┬▒ 0.0240   85.90 ┬▒ 5.93   57.07 ┬▒ 15.00   48.1
+Median               85.32 ┬▒ 22.74   0.8764 ┬▒ 0.2644   65.28 ┬▒ 39.09   29.23 ┬▒ 39.22   50.8
+TrimmedMean          90.82 ┬▒ 2.85   0.9478 ┬▒ 0.0178   91.82 ┬▒ 1.25   37.73 ┬▒ 3.73   51.8
+Krum                 70.42 ┬▒ 29.30   0.7373 ┬▒ 0.3523   36.81 ┬▒ 37.91   179.73 ┬▒ 42.83   52.2
+Rule-Based           88.36 ┬▒ 2.79   0.9325 ┬▒ 0.0181   90.24 ┬▒ 3.58   84.17 ┬▒ 25.56   55.6
+SingleShot-LLM       75.95 ┬▒ 29.66   0.7809 ┬▒ 0.3498   64.85 ┬▒ 38.80   82.93 ┬▒ 33.59   216.7
+Reflective-Agent     83.10 ┬▒ 20.37   0.8689 ┬▒ 0.2356   55.02 ┬▒ 33.85   105.78 ┬▒ 53.31   163.5
+Agentic-AI           77.11 ┬▒ 28.40   0.7956 ┬▒ 0.3350   59.99 ┬▒ 35.72   76.79 ┬▒ 18.98   99.1
+========================================================================================================================
+========================================================================================================================
+TABLE 2: Per-Regime Mean Test Accuracy (%) ┬▒ Std
+========================================================================================================================
+Method               Near-IID (a=100)       Moderate (a=1.0)       Severe (a=0.2)         Byzantine (a=0.2+Attack)
+------------------------------------------------------------------------------------------------------------------------
+FedAvg               85.41 ┬▒ 1.94        90.56 ┬▒ 0.95        93.40 ┬▒ 0.51        89.01 ┬▒ 4.15       
+Median               90.51 ┬▒ 1.26        92.48 ┬▒ 0.49        92.84 ┬▒ 0.56        65.43 ┬▒ 39.20       
+TrimmedMean          86.68 ┬▒ 2.20        91.16 ┬▒ 0.81        93.16 ┬▒ 0.78        92.29 ┬▒ 1.23       
+Krum                 81.94 ┬▒ 5.67        85.28 ┬▒ 4.92        63.18 ┬▒ 33.29        51.27 ┬▒ 38.67       
+Rule-Based           85.80 ┬▒ 1.67        88.37 ┬▒ 2.27        89.51 ┬▒ 2.06        89.75 ┬▒ 3.00       
+SingleShot-LLM       86.58 ┬▒ 2.15        88.26 ┬▒ 3.81        63.89 ┬▒ 38.13        65.07 ┬▒ 38.95       
+Reflective-Agent     87.91 ┬▒ 2.94        88.18 ┬▒ 4.33        91.93 ┬▒ 1.96        64.40 ┬▒ 33.94       
+Agentic-AI           85.81 ┬▒ 2.17        88.76 ┬▒ 2.91        70.65 ┬▒ 36.59        63.21 ┬▒ 37.80       
+========================================================================================================================
+========================================================================================================================
+TABLE 3: Statistical Significance (Wilcoxon Signed-Rank Test + Cohen's d)
+========================================================================================================================
+Comparison                               N     Mean Diff    p-value      Cohen d      Significant?
+------------------------------------------------------------------------------------------------------------------------
+AgenticAI_vs_FixedFedAvg                 3     -25.91%      1.0000      -0.553       No
+AgenticAI_vs_FixedKrum                   3     +23.18%      1.0000      +0.457       No
+AgenticAI_vs_FixedMedian                 3     -5.30%      0.5000      -0.649       No
+AgenticAI_vs_FixedTrimmedMean            3     -31.83%      0.2500      -0.748       No
+AgenticAI_vs_RuleBased                   3     -30.25%      0.2500      -0.765       No
+ReflectiveAgent_vs_FixedFedAvg           3     -30.87%      0.5000      -0.714       No
+ReflectiveAgent_vs_FixedKrum             3     +18.22%      1.0000      +0.322       No
+ReflectiveAgent_vs_FixedMedian           3     -10.26%      0.5000      -0.604       No
+ReflectiveAgent_vs_FixedTrimmedMean      3     -36.80%      0.2500      -0.909       No
+ReflectiveAgent_vs_RuleBased             3     -35.21%      0.2500      -0.937       No
+SingleShotLLM_vs_FixedFedAvg             3     -21.05%      1.0000      -0.410       No
+SingleShotLLM_vs_FixedKrum               3     +28.04%      0.5000      +0.581       No
+SingleShotLLM_vs_FixedMedian             3     -0.43%      1.0000      -0.227       No
+SingleShotLLM_vs_FixedTrimmedMean        3     -26.97%      0.5000      -0.584       No
+SingleShotLLM_vs_RuleBased               3     -25.39%      0.5000      -0.588       No
+========================================================================================================================
+====================================================================================================
+TABLE 4: Byzantine Attack Impact (R11-15 Pre-Attack vs R16-20 Post-Attack)
+====================================================================================================
+Method               Pre-Attack Acc     Post-Attack Acc    Drop (%)     Resilience  
+----------------------------------------------------------------------------------------------------
+FedAvg               93.40%           89.01%           +4.39%       Medium
+Median               92.84%           65.43%           +27.41%       Low
+TrimmedMean          93.16%           92.29%           +0.87%       High
+Krum                 63.18%           51.27%           +11.91%       Low
+Rule-Based           89.51%           89.75%           -0.23%       High
+SingleShot-LLM       63.89%           65.07%           -1.17%       High
+Reflective-Agent     91.93%           64.40%           +27.53%       Low
+Agentic-AI           70.65%           63.21%           +7.44%       Low
+====================================================================================================
+====================================================================================================
+TABLE 5: Agentic Decision Quality Summary
+====================================================================================================
+Method               Total Decisions    Repairs      Repair Rate    Avg Iterations   LLM Calls   
+----------------------------------------------------------------------------------------------------
+SingleShot-LLM       40                 0            0.0%          1.0              0
+Reflective-Agent     40                 0            0.0%          1.0              0
+Agentic-AI           43                 0            0.0%          1.0              129
+====================================================================================================
+====================================================================================================
+TABLE 6: LLM API Cost Breakdown
+====================================================================================================
+Stage                  Calls    Input Tokens   Output Tokens   Total Tokens   Avg Latency(ms) 
+----------------------------------------------------------------------------------------------------
+agentic_analyst        43       0              0               0              10908           
+agentic_critic         43       0              0               0              10697           
+agentic_proposer       43       0              0               0              14634           
+analyst                40       0              0               0              25057           
+critic                 40       0              0               0              62775           
+proposer               40       0              0               0              37277           
+single_shot            40       0              0               0              232770          
+----------------------------------------------------------------------------------------------------
+TOTAL                  289      0              0               0             
+====================================================================================================
+================================================================================
+KEY FINDINGS
+================================================================================
+
+1. BEST OVERALL METHOD: TrimmedMean
+   Final test accuracy: 91.82% (mean across 3 seeds)
+   Cumulative regret: 37.73%
+
+2. BYZANTINE RESILIENCE RANKING:
+   1. SingleShot-LLM       drop = -1.17%
+   2. Rule-Based           drop = -0.23%
+   3. TrimmedMean          drop = +0.87%
+   4. FedAvg               drop = +4.39%
+   5. Agentic-AI           drop = +7.44%
+   6. Krum                 drop = +11.91%
+   7. Median               drop = +27.41%
+   8. Reflective-Agent     drop = +27.53%
+
+3. ORACLE REGRET ANALYSIS:
+   1. Median               cumulative regret = 29.23%
+   2. TrimmedMean          cumulative regret = 37.73%
+   3. FedAvg               cumulative regret = 57.07%
+   4. Agentic-AI           cumulative regret = 76.79%
+   5. SingleShot-LLM       cumulative regret = 82.93%
+   6. Rule-Based           cumulative regret = 84.17%
+   7. Reflective-Agent     cumulative regret = 105.78%
+   8. Krum                 cumulative regret = 179.73%
+
+4. AGENTIC AI vs BASELINES:
+   Agentic-AI           vs baselines: avg improvement = -9.97%
+   Reflective-Agent     vs baselines: avg improvement = -14.93%
+   SingleShot-LLM       vs baselines: avg improvement = -5.10%
+
+5. COMPUTATIONAL COST:
+   FedAvg               avg round time = 48.1s
+   Median               avg round time = 50.8s
+   TrimmedMean          avg round time = 51.8s
+   Krum                 avg round time = 52.2s
+   Rule-Based           avg round time = 55.6s
+   SingleShot-LLM       avg round time = 216.7s
+   Reflective-Agent     avg round time = 163.5s
+   Agentic-AI           avg round time = 99.1s
+
+6. DATA HETEROGENEITY IMPACT:
+   FedAvg               IID ΓåÆ Severe non-IID degradation = -7.99%
+   Median               IID ΓåÆ Severe non-IID degradation = -2.33%
+   TrimmedMean          IID ΓåÆ Severe non-IID degradation = -6.48%
+   Krum                 IID ΓåÆ Severe non-IID degradation = +18.77%
+   Rule-Based           IID ΓåÆ Severe non-IID degradation = -3.72%
+   SingleShot-LLM       IID ΓåÆ Severe non-IID degradation = +22.68%
+   Reflective-Agent     IID ΓåÆ Severe non-IID degradation = -4.02%
+   Agentic-AI           IID ΓåÆ Severe non-IID degradation = +15.16%
+
+================================================================================
+
+  Saved all tables to c:\Users\akhil\Downloads\fl_project_final (2)\fl_project_final\fl_project\paper_outputs\all_tables_and_findings.txt
+
+[5/6] Generating publication-quality plots...
+  Saved fig1_convergence_curves.png
+  Saved fig2_regime_accuracy_bars.png
+  Saved fig3_cumulative_regret.png
+  Saved fig4_final_accuracy_boxplot.png
+  Saved fig5_byzantine_resilience.png
+  Saved fig6_regret_heatmap.png
+  Saved fig7_f1_comparison.png
+  Saved fig8_round_time.png
+  Saved fig9_accuracy_vs_regret.png
+  Saved fig10_spider_chart.png
+
+[6/6] Exporting JSON summary...
+  Saved experiment3_summary.json
+
+======================================================================
+ALL OUTPUTS SAVED TO: c:\Users\akhil\Downloads\fl_project_final (2)\fl_project_final\fl_project\paper_outputs
+  - 10 publication-quality figures (PNG, 300 DPI)
+  - 6 tables + key findings (TXT)
+  - JSON summary for further processing
+======================================================================

@@ -1,0 +1,138 @@
+{
+  "FixedFedAvg": {
+    "display_name": "FedAvg",
+    "mean_overall_accuracy": 89.6,
+    "std_overall_accuracy": 3.72,
+    "mean_overall_f1": 0.9403,
+    "mean_final_accuracy": 85.9,
+    "std_final_accuracy": 5.93,
+    "mean_cumulative_regret": 57.07,
+    "std_cumulative_regret": 15.0,
+    "mean_round_time_s": 48.1,
+    "regime_accuracy": {
+      "R1-5": 85.41,
+      "R6-10": 90.56,
+      "R11-15": 93.4,
+      "R16-20": 89.01
+    }
+  },
+  "FixedMedian": {
+    "display_name": "Median",
+    "mean_overall_accuracy": 85.32,
+    "std_overall_accuracy": 22.74,
+    "mean_overall_f1": 0.8764,
+    "mean_final_accuracy": 65.28,
+    "std_final_accuracy": 39.09,
+    "mean_cumulative_regret": 29.23,
+    "std_cumulative_regret": 39.22,
+    "mean_round_time_s": 50.8,
+    "regime_accuracy": {
+      "R1-5": 90.51,
+      "R6-10": 92.48,
+      "R11-15": 92.84,
+      "R16-20": 65.43
+    }
+  },
+  "FixedTrimmedMean": {
+    "display_name": "TrimmedMean",
+    "mean_overall_accuracy": 90.82,
+    "std_overall_accuracy": 2.85,
+    "mean_overall_f1": 0.9478,
+    "mean_final_accuracy": 91.82,
+    "std_final_accuracy": 1.25,
+    "mean_cumulative_regret": 37.73,
+    "std_cumulative_regret": 3.73,
+    "mean_round_time_s": 51.8,
+    "regime_accuracy": {
+      "R1-5": 86.68,
+      "R6-10": 91.16,
+      "R11-15": 93.16,
+      "R16-20": 92.29
+    }
+  },
+  "FixedKrum": {
+    "display_name": "Krum",
+    "mean_overall_accuracy": 70.42,
+    "std_overall_accuracy": 29.3,
+    "mean_overall_f1": 0.7373,
+    "mean_final_accuracy": 36.81,
+    "std_final_accuracy": 37.91,
+    "mean_cumulative_regret": 179.73,
+    "std_cumulative_regret": 42.83,
+    "mean_round_time_s": 52.2,
+    "regime_accuracy": {
+      "R1-5": 81.94,
+      "R6-10": 85.28,
+      "R11-15": 63.18,
+      "R16-20": 51.27
+    }
+  },
+  "RuleBased": {
+    "display_name": "Rule-Based",
+    "mean_overall_accuracy": 88.36,
+    "std_overall_accuracy": 2.79,
+    "mean_overall_f1": 0.9325,
+    "mean_final_accuracy": 90.24,
+    "std_final_accuracy": 3.58,
+    "mean_cumulative_regret": 84.17,
+    "std_cumulative_regret": 25.56,
+    "mean_round_time_s": 55.6,
+    "regime_accuracy": {
+      "R1-5": 85.8,
+      "R6-10": 88.37,
+      "R11-15": 89.51,
+      "R16-20": 89.75
+    }
+  },
+  "SingleShotLLM": {
+    "display_name": "SingleShot-LLM",
+    "mean_overall_accuracy": 75.95,
+    "std_overall_accuracy": 29.66,
+    "mean_overall_f1": 0.7809,
+    "mean_final_accuracy": 64.85,
+    "std_final_accuracy": 38.8,
+    "mean_cumulative_regret": 82.93,
+    "std_cumulative_regret": 33.59,
+    "mean_round_time_s": 216.7,
+    "regime_accuracy": {
+      "R1-5": 86.58,
+      "R6-10": 88.26,
+      "R11-15": 63.89,
+      "R16-20": 65.07
+    }
+  },
+  "ReflectiveAgent": {
+    "display_name": "Reflective-Agent",
+    "mean_overall_accuracy": 83.1,
+    "std_overall_accuracy": 20.37,
+    "mean_overall_f1": 0.8689,
+    "mean_final_accuracy": 55.02,
+    "std_final_accuracy": 33.85,
+    "mean_cumulative_regret": 105.78,
+    "std_cumulative_regret": 53.31,
+    "mean_round_time_s": 163.5,
+    "regime_accuracy": {
+      "R1-5": 87.91,
+      "R6-10": 88.18,
+      "R11-15": 91.93,
+      "R16-20": 64.4
+    }
+  },
+  "AgenticAI": {
+    "display_name": "Agentic-AI",
+    "mean_overall_accuracy": 77.11,
+    "std_overall_accuracy": 28.4,
+    "mean_overall_f1": 0.7956,
+    "mean_final_accuracy": 59.99,
+    "std_final_accuracy": 35.72,
+    "mean_cumulative_regret": 76.79,
+    "std_cumulative_regret": 18.98,
+    "mean_round_time_s": 99.1,
+    "regime_accuracy": {
+      "R1-5": 85.81,
+      "R6-10": 88.76,
+      "R11-15": 70.65,
+      "R16-20": 63.21
+    }
+  }
+}
